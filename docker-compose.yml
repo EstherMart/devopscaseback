@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # Backend Ruby 2.7.7
+  backend:
+    image: ruby:2.7.7
+    container_name: backend
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+      - ./backend/db:/app/db  
+    environment:
+      - RAILS_ENV=development
+      - DATABASE_USERNAME=go_case  
+      - DATABASE_PASSWORD=gocase123 
+    command: bash -c "bundle install && rails db:create db:migrate && rails server -b '0.0.0.0'"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    networks:
+      - app_network
+
+  rontend:
+    image: node:18  # Use a imagem do Node.js para o frontend
+    container_name: frontend
+    ports:
+      - "8080:5173"  
+    environment:
+      - API_URL=http://backend:3000 
+    networks:
+      - app_network
+    working_dir: /app
+    volumes:
+      - ./frontend:/app  
+    command: bash -c "git clone https://github.com/EstherMart/devopscasefront /app && cd /app && npm install && npm run dev"  
+    
+  db:
+    image: busybox 
+    container_name: db
+    command: tail -f /dev/null  
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  db_data:
