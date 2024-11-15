@@ -13,8 +13,7 @@ Este projeto integra um backend em Ruby on Rails com um frontend em React/Vite, 
 
 1. **Clone o repositório** (caso ainda não tenha feito isso):
    ```bash
-   git clone <URL_DO_SEU_REPOSITORIO>
-   cd <diretorio_do_repositorio>
+   git clone https://github.com/EstherMart/devopscaseback
    ```
 
 2. **Subir os Containers com Docker Compose**
